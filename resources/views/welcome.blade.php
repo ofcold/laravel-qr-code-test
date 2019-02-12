@@ -82,7 +82,45 @@
             <div class="content">
 
                 <div style="text-align: center; margin-bottom: 20px;">
-                    <img src="http://qr.dev/qrcode?content=18898726543&data_type=phone_number&color=0064db&size=200&bg_color=ffffff&format=png&logo=http://toocold.org/favicon.png&module=roundness">
+                    <img src="http://qr.dev/qrcode?content=18898726543&data_type=phone_number&color=0064db&size=200&bg_color=ffffff&format=png&logo=http://toocold.org/favicon.png&module=roundness" style="margin-left: 20px;">
+                    <img src="{{
+                        'http://qr.dev/qrcode?' . http_build_query(
+                            [
+                                'content'=> [
+                                    '18898726543',
+                                    'Hi, QR Code...!'
+                                ],
+                                'data_type' => 'sms',
+                                'color' => 'ff0000',
+                                'size' => 200,
+                                'bg_color' => 'ffffff',
+                                'format' => 'png',
+                                'logo' => 'http://toocold.org/favicon.png',
+                                'module' => 'roundness',
+                            ]
+                        )
+                    }}" style="margin-left: 20px;">
+
+                    <img src="{{
+                        'http://qr.dev/qrcode?' . http_build_query(
+                            [
+                                'content'=> [
+                                    [
+                                        'encryption' => 'WPA2',
+                                        'ssid' => 'iPhone”bill',
+                                        'password' => '@tingting..'
+                                    ]
+                                ],
+                                'data_type' => 'wifi',
+                                'color' => '0064db',
+                                'size' => 200,
+                                'bg_color' => 'ffffff',
+                                'format' => 'png',
+                                'logo' => 'http://toocold.org/favicon.png',
+                                'module' => 'roundness',
+                            ]
+                        )
+                    }}" style="margin-left: 20px;">
                 </div>
 
                 <div class="title m-b-md">

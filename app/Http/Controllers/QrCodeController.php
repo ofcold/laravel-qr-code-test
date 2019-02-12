@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Ofcold\QrCode\BaconQrCodeGenerator;
 use Ofcold\QrCode\HexToRgb;
@@ -73,7 +74,11 @@ class QrCodeController extends Controller
         // In response to the QR code, the output source is from the QR code type output type.
         return response(
                 // QR code type. the type support btc, email, geo, phone number, sms, wifi.
-                $qrResponse->{$this->responseMethod($parameters)}($parameters['content'])
+                // $qrResponse->{$this->responseMethod($parameters)}(...Arr::wrap($parameters['content']))
+                call_user_func_array(
+                    [$qrResponse, $this->responseMethod($parameters)],
+                    Arr::wrap($parameters['content'])
+                )
             )
             ->header('Content-Type', $qrResponse->getContentType());
     }
@@ -111,7 +116,7 @@ class QrCodeController extends Controller
     protected function setLogo(BaconQrCodeGenerator $qrCode, array $parameters)
     {
         $commonFunc = function($qrCode) {
-            $qrCode->format('png')->errorCorrection(3);
+            $qrCode->format('png')->errorCorrection(2);
         };
 
         if (isset($parameters['logo'])) {
