@@ -1,69 +1,89 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
-
 <p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
+    Ofcold QR Code
 </p>
 
-## About Laravel
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as:
+## Introduction
+```bash
+git clone https://github.com/ofcold/laravel-qr-code-test
+```
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Configuration
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications.
+### Hosts
+```bash
 
-## Learning Laravel
+echo qr.dev >> /etc/hosts
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of any modern web application framework, making it a breeze to get started learning the framework.
+```
 
-If you're not in the mood to read, [Laracasts](https://laracasts.com) contains over 1100 video tutorials on a range of topics including Laravel, modern PHP, unit testing, JavaScript, and more. Boost the skill level of yourself and your entire team by digging into our comprehensive video library.
+### Nginx
+`qr.dev.conf`
 
-## Laravel Sponsors
+```base
+server {
+    listen  80;
+    server_name  qr.dev www.qr.dev;
+    charset  utf-8;
+    root  /sites/rep/laravel-qr-code-test/public;
 
-We would like to extend our thanks to the following sponsors for helping fund on-going Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell):
+    gzip on;
+    gzip_static on;
+    gzip_http_version 1.0;
+    gzip_disable "MSIE [1-6].";
+    gzip_vary on;
+    gzip_comp_level 9;
+    gzip_proxied any;
+    gzip_types text/plain text/css application/x-javascript text/xml application/xml application/xml+rss text/javascript application/javascript image/svg+xml;
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- [UserInsights](https://userinsights.com)
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-- [Invoice Ninja](https://www.invoiceninja.com)
-- [iMi digital](https://www.imi-digital.de/)
-- [Earthlink](https://www.earthlink.ro/)
-- [Steadfast Collective](https://steadfastcollective.com/)
-- [We Are The Robots Inc.](https://watr.mx/)
-- [Understand.io](https://www.understand.io/)
+    fastcgi_intercept_errors off;
+    fastcgi_buffers 8 16k;
+    fastcgi_buffer_size 32k;
+    fastcgi_read_timeout 180;
 
-## Contributing
+    # Remove trailing slashes
+    rewrite ^/(.*)/$ /$1 permanent;
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+    access_log  /sites/ofcold/servers/logs/pcf.access.log;
+    error_log  /sites/ofcold/servers/logs/pcf.error.log;
 
-## Security Vulnerabilities
+    location / {
+        try_files $uri $uri/ /index.php?$args;
+        index  index.php;
+        autoindex   on;
+        include  /usr/local/etc/nginx/php-fpm;
+    }
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+    location ~ /\.ht {
+        access_log off;
+        log_not_found off;
+        deny all;
+    }
 
-## License
+    location ~* \.ico$ {
+        expires 1w;
+        access_log off;
+    }
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+    location ~* \.(?:jpg|jpeg|gif|png|ico|gz|svg|svgz|ttf|otf|woff|eot|mp4|ogg|ogv|webm)$ {
+        try_files $uri $uri/ /index.php?$query_string;
+
+        access_log off;
+        log_not_found off;
+    }
+
+    location ~* \.(?:css|js)$ {
+        try_files $uri $uri/ /index.php?$query_string;
+        access_log off;
+        log_not_found off;
+    }
+
+    client_max_body_size 512M;
+
+    add_header "X-UA-Compatible" "IE=Edge,chrome=1";
+}
+
+```
+
+## Example
+http://qr.dev/qrcode?content=18898726543&data_type=phone_number&color=0064db&size=200&bg_color=ffffff&format=png&logo=http://toocold.org/favicon.png&module=roundness
