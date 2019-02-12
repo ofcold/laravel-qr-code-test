@@ -80,18 +80,15 @@
             @endif
 
             <div class="content">
-                <div class="title m-b-md">
-                    Laravel
+
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <img src="http://qr.dev/qrcode?content=18898726543&data_type=phone_number&color=0064db&size=200&bg_color=ffffff&format=png&logo=http://toocold.org/favicon.png&module=roundness">
                 </div>
 
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
+                <div class="title m-b-md">
+                    Ofcold QR Code.
                 </div>
+
             </div>
         </div>
     </body>
