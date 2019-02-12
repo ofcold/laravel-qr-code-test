@@ -24,6 +24,7 @@ class QrCodeController extends Controller
         'bg_color',
         'data_type',
         'use_inc',
+        'margin',
         'module',
     ];
 
@@ -57,6 +58,7 @@ class QrCodeController extends Controller
         $qrResponse = $QRcode
             ->encoding('UTF-8')
             ->module($parameters['module'] ?? null)
+            ->margin($parameters['margin'] ?? 0)
             ->size($parameters['size'] ?? 320);
 
         // QR code output format, only supports png, eps, svg.
