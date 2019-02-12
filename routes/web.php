@@ -14,3 +14,5 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/qrcode', 'QrCodeController@make')->name('qrcode::generator');
